@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import os
+import sys
 
 app = Flask(__name__)
 
@@ -36,15 +37,11 @@ def append_key_to_file(key):
         file.write(key + "\n")
 
 def update_github_raw():
-    with open(LICENSE_KEYS_FILE, "r") as file:
-        keys_str = file.read()
-
-    headers = {
-        "Authorization": f"token {GITHUB_ACCESS_TOKEN}",
-        "Content-Type": "text/plain",
-    }
+    keys_str = "\n".join(keys)
+    headers = {"Authorization": f"token {GITHUB_ACCESS_TOKEN}"}
     response = requests.put(GITHUB_RAW_URL, data=keys_str, headers=headers)
     response.raise_for_status()
 
 if __name__ == "__main__":
-    app.run()
+    keys = sys.argv[1].split(",")
+    update_github_raw(keys)
