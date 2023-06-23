@@ -15,7 +15,7 @@ jobs:
 
       - name: Update Raw File
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         run: |
           python update_keys.py "${{ github.event.inputs.keys }}"
           git config user.name "GitHub Actions"
