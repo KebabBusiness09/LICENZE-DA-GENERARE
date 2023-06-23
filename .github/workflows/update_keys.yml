@@ -14,8 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Update Raw File
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
-          echo "${{ secrets.ACCESS_TOKEN }}" > access_token.txt
           python update_keys.py "${{ github.event.inputs.keys }}"
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
